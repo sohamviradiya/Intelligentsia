@@ -1,14 +1,8 @@
 import { Component } from "react";
-
-class User extends Component {
-	constructor(props: any) {
-		super(props);
-          this.state = {
-          };
-	}
-	render() {
-		return <div>User</div>;
-	}
+import { useParams } from "react-router-dom";
+function User(props: any) {
+	const { id } = useParams();
+	return <div>User {id}</div>;
 }
 
 export default User;
