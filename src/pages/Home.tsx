@@ -9,3 +9,5 @@ class Home extends Component {
 		return <div>Home</div>;
 	}
 }
+
+export default Home;
