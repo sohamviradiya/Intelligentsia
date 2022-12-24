@@ -1,13 +1,5 @@
-import { Component } from "react";
-
-class TweetForm extends Component {
-	constructor(props: any) {
-		super(props);
-		this.state = {};
-	}
-	render() {
-		return <div>Tweet Form</div>;
-	}
+function TweetForm(props: any): JSX.Element {
+	return <div>TweetForm</div>;
 }
 
 export default TweetForm;
