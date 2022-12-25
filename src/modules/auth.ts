@@ -16,6 +16,7 @@ const AuthModule = (() => {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username, password }),
 		});
+		if(response.status === 401) alert("Invalid credentials");
 		const data = await response.json();
 		if (!data.access_token) throw new Error("Unable to login");
 		localStorage.setItem("token", data.access_token);
@@ -28,6 +29,7 @@ const AuthModule = (() => {
 
 	const PROFILE = async (): Promise<AuthInterface> => {
 		const token = localStorage.getItem("token");
+		console.log(token);
 		if (!token) throw new Error("No token found");
 		const response = await fetch(`${baseurl}/auth/`, {
 			method: "GET",

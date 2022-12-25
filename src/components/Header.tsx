@@ -9,6 +9,7 @@ function Header(props: any): JSX.Element {
                .then((res) => {
                     if (!res.username || !res._id)
                          return;
+                    setUser({ ...user, username: res.username, _id: res._id });
                })
                .catch((err) => {
                     console.log(err);
@@ -26,7 +27,7 @@ function Header(props: any): JSX.Element {
                               <a className="h2 text-decoration-none" href="/#/explore"> Explore </a>
                          </li>
                          <li className="nav-item">
-                              {(user._id.length > 0) ? (
+                              {(isLogin) ? (
                                    <a className="h2 text-decoration-none" href={`/#/user/${user._id}`}> Profile </a>
                               ) : (
                                    <a className="h2 text-decoration-none" href="/#/user"> SignUp </a>
@@ -38,7 +39,7 @@ function Header(props: any): JSX.Element {
                               ) : (
 
                                    <div className="dropdown">
-                                        <button className="h2 text-light bg-black pt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false"> Login </button>
+                                        <button className="h2 text-light bg-black pt-2 px-4 dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false"> Login </button>
                                         <form className="dropdown-menu p-4 bg-dark text-bg-dark min-vw-25">
                                              <div className="mb-3 input-group ">
                                                   <input type="text" className="form-control" onChange={(e) => { setUser({ ...user, username: e.target.value }) }} value={user.username} name="username" placeholder="username" />
