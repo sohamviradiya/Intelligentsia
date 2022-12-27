@@ -29,8 +29,7 @@ const AuthModule = (() => {
 
 	const PROFILE = async (): Promise<AuthInterface> => {
 		const token = localStorage.getItem("token");
-		console.log(token);
-		if (!token) throw new Error("No token found");
+		if (!token) return { token: '', username: '', _id: '' };
 		const response = await fetch(`${baseurl}/auth/`, {
 			method: "GET",
 			headers: {
