@@ -19,7 +19,7 @@ function Profile(props: any): JSX.Element {
 	}, []);
 
 	return (
-		<div>
+		<>
 			<section className="container container-fluid">
 				<div className="row">
 					<div className="col">
@@ -51,8 +51,7 @@ function Profile(props: any): JSX.Element {
 				</ul>
 				<Outlet/>
 			</section>
-
-		</div>
+		</>
 	);
 }
 

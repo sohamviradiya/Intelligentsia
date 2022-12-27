@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { useHref, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { baseurl, tweetlist } from "../modules/config";
 import { TweetInterface } from "../modules/tweet";
 import Tweet from "../components/Tweet";
+import Loading from "../components/Loading";
+
 function TweetList(props: any): JSX.Element {
      const { id } = useParams();
      const [tweets, setTweets] = useState<TweetInterface[]>([] as TweetInterface[]);
@@ -31,17 +33,17 @@ function TweetList(props: any): JSX.Element {
 
      return (
           (loading) ?
-               (<div className="position-absolute top-50 start-50 translate-middle">Loading...</div>)
+               <Loading />
                : (
                     <ul className="container w-75 p-5">
-                    {tweets.map((tweet: any) => (
-                         <li
-                              key={tweet._id}
-                              className="mb-5">
-                              {Tweet(tweet)}
-                         </li>
-                    ))}
-               </ul>)
+                         {tweets.map((tweet: any) => (
+                              <li
+                                   key={tweet._id}
+                                   className="mb-5">
+                                   {Tweet(tweet)}
+                              </li>
+                         ))}
+                    </ul>)
      );
 }
 export default TweetList;

@@ -4,6 +4,7 @@ import { userlist } from "../modules/config";
 import { baseurl } from "../modules/config";
 import { UserInterface } from "../modules/user";
 import User from "../components/User";
+import Loading from "../components/Loading";
 function UserList(props: any): JSX.Element {
 	const { id } = useParams<{ id: string }>();
 	const [users, setUsers] = useState<UserInterface[]>([]);
@@ -35,7 +36,7 @@ function UserList(props: any): JSX.Element {
 	return (
 		<>
 			{(loading) ?
-				<div className="position-absolute top-50 start-50 translate-middle">Loading...</div>
+				<Loading />
 				: (
 					<ul className="container w-75 p-5">
 						{users.map((user: any) => (

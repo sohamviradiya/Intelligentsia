@@ -24,7 +24,7 @@ class Root extends Component {
 				<div className="bg-dark p-5 main">
 					<Routes>
 						<Route path="/" element={<TweetList type={tweetlist.home} />} />
-						<Route path="/explore" element={<UserList type={userlist.home}  />} />
+						<Route path="/explore" element={<UserList type={userlist.home} />} />
 						<Route path="/user" element={<UserForm />} />
 						<Route path="/user/:id" element={<Profile />} >
 							<Route path="tweets" element={<TweetList type={tweetlist.authored} />} />
