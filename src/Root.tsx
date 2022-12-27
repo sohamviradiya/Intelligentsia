@@ -1,15 +1,16 @@
 import { Component } from "react";
 import "./App.css";
 import { HashRouter } from "react-router-dom";
-import { Routes, Route } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 import Header from "./components/Header";
-import Home from "./pages/Home";
-import Catalog from "./pages/Catalog";
 import Profile from "./pages/Profile";
 import Error from "./pages/Error";
 import UserForm from "./pages/UserForm";
 import Thread from "./pages/Thread";
 import TweetForm from "./pages/TweetForm";
+import UserList from "./pages/UserList";
+import TweetList from "./pages/Tweetlist";
+import { tweetlist, userlist } from "./modules/config";
 
 class Root extends Component {
 	constructor(props: any) {
@@ -20,18 +21,23 @@ class Root extends Component {
 		return (
 			<HashRouter>
 				<Header />
-				<div className="mt-5">
+				<div className="bg-dark p-5 main">
 					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/explore" element={<Catalog />} />
+						<Route path="/" element={<TweetList type={tweetlist.home} />} />
+						<Route path="/explore" element={<UserList type={userlist.home}  />} />
 						<Route path="/user" element={<UserForm />} />
-						<Route path="/user/:id" element={<Profile />} />
+						<Route path="/user/:id" element={<Profile />} >
+							<Route path="tweets" element={<TweetList type={tweetlist.authored} />} />
+							<Route path="followers" element={<UserList type={userlist.followers} />} />
+							<Route path="following" element={<UserList type={userlist.following} />} />
+							<Route path="liked" element={<TweetList type={tweetlist.liked} />} />
+							<Route path="" element={<Navigate to="tweets" />} />
+						</Route>
 						<Route path="/tweet" element={<TweetForm />} />
 						<Route path="/tweet/:id" element={<Thread />} />
 						<Route path="*" element={<Error />} />
 					</Routes>
 				</div>
-
 			</HashRouter>
 		);
 	}
