@@ -7,7 +7,7 @@ export type UserInterface = {
 	lastName: string | null;
 	email: string | null;
 	country: string | null;
-	followers: UserInterface[];
+	following: UserInterface[];
 	bio: string | null;
 	avatar: File | null;
 	joinedAt: Date;
