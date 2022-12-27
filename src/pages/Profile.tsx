@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import UserModule, { UserInterface } from "../modules/user";
+import { UserInterface } from "../modules/user";
 
 import { baseurl } from "../modules/config";
 
@@ -9,13 +9,9 @@ function Profile(props: any): JSX.Element {
 	const [user, setUser] = useState<UserInterface>({} as UserInterface);
 	useEffect(() => {
 		if (!id) throw new Error("No id provided");
-		UserModule.READ(id)
-			.then((data: UserInterface) => {
-				setUser(data);
-			})
-			.catch((err: Error) => {
-				alert(err);
-			});
+		fetch(`${baseurl}/user/${id}`).then(res => res.json()).then(data => {
+			setUser(data);
+		});
 	}, []);
 
 	return (
