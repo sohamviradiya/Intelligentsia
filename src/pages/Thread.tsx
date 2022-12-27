@@ -16,14 +16,12 @@ function Thread(props: any): JSX.Element {
 		if (!id) throw new Error("No id provided");
 		fetch(`${baseurl}/tweets/${id}`).then((res) => {
 			res.json().then((data: TweetInterface) => {
-				console.log(data);
 				setTweet(data);
 				setLoading(false);
 			});
 		});
 		fetch(`${baseurl}/tweets/${id}/comments`).then((res) => {
 			res.json().then((data: CommentInterface[]) => {
-				console.log(data);
 				setComments(data);
 			});
 		});

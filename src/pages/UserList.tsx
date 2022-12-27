@@ -11,7 +11,7 @@ function UserList(props: any): JSX.Element {
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		if (props.type == userlist.home) {
-			fetch("${baseurl}/users/")
+			fetch(`${baseurl}/users/`)
 				.then((res) => res.json())
 				.then((data: UserInterface[]) => {
 					setUsers(data);
@@ -38,7 +38,7 @@ function UserList(props: any): JSX.Element {
 			{(loading) ?
 				<Loading />
 				: (
-					<ul className="container w-75 p-5">
+					<ul className="container w-50 p-5">
 						{users.map((user: any) => (
 							<li key={`${user._id}`} className="mb-5">
 								{User(user)}

@@ -7,10 +7,9 @@ function Tweet(tweet: TweetInterface): JSX.Element {
 		<div className="card bg-dark border-primary">
 			<div className="row g-2">
 				<div className="col-4 d-flex flex-row align-items-center justify-content-center">
-					<img src={`${baseurl}/${tweet.user.avatar}`} className="border border-info" height={250} />
+					<img src={`${baseurl}/${tweet.user.avatar}`} className="border border-info" height={220} />
 				</div>
 				<div className="col-8">
-
 					<div className="card-header h2 d-flex flex-row justify-content-start">
 						<Link className="card-title display-6 text-decoration-none text-primary" to={`tweet/${tweet._id}`}> {tweet.title} </Link>
 					</div>

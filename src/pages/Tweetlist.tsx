@@ -37,9 +37,7 @@ function TweetList(props: any): JSX.Element {
                : (
                     <ul className="container w-75 p-5">
                          {tweets.map((tweet: any) => (
-                              <li
-                                   key={tweet._id}
-                                   className="mb-5">
+                              <li key={tweet._id} className="mb-5">
                                    {Tweet(tweet)}
                               </li>
                          ))}
