@@ -1,0 +1,1 @@
+export default (): JSX.Element => (<div className="position-absolute top-50 start-50 translate-middle text-primary display-1">Loading...</div>);
