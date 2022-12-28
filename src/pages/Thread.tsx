@@ -1,10 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { TweetInterface } from "../modules/tweet";
 import { baseurl } from "../modules/config";
 import Comment from "../components/Comment";
 import { CommentInterface } from "../modules/comment";
-import Tweet from "../components/Tweet";
 import Loading from "../components/Loading";
 
 function Thread(props: any): JSX.Element {
@@ -32,7 +31,18 @@ function Thread(props: any): JSX.Element {
 			<Loading /> :
 			(<>
 				<section className="container container-fluid">
-					{Tweet(tweet)}
+					<div className="row">
+						<div className="col-4">
+							<img src={`${baseurl}/${tweet.user.avatar}`} className="border border-light" height={220} alt="..." />
+						</div>
+						<div className="col-8 border border-primary p-3 text-bg-dark d-flex flex-column justify-content-evenly">
+							<h3 className="display-4"> tweet.title </h3>
+							<Link className="display-6" to={`/user/${tweet.user._id}`}> {tweet.user.username}  </Link>
+							<h5 className="h3"> {tweet.content} </h5>
+							<h6 className="h4"> Likes: {tweet.likes.length} </h6>
+							<p className="h5"> {new Date(tweet.postedAt).toLocaleString()} </p>
+						</div>
+					</div>
 				</section>
 				<section className="container container-fluid">
 					<ul className="container w-75 p-5">
