@@ -30,10 +30,11 @@ function Profile(props: any): JSX.Element {
 							<h5 className="h3"> {user.email} </h5>
 							<h6 className="h4"> @{user.country} </h6>
 							<p className="h5"> {user.bio} </p>
+							<p className="h6"> Joined: {new Date(user.joinedAt).toLocaleDateString()} </p>
 						</div>
 					</div>
 				</section>
-				<section className="mt-5">
+				<section className="mt-5 min-vh-100">
 					<ul className="nav nav-tabs">
 						<li className="nav-item">
 							<NavLink className="nav-link" to="tweets"><span className="h4 px-2">Tweets</span></NavLink>
