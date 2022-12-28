@@ -21,7 +21,7 @@ class Root extends Component {
 		return (
 			<HashRouter>
 				<Header />
-				<div className="bg-dark p-5 main">
+				<div className="bg-dark p-5 main min-vh-100">
 					<Routes>
 						<Route path="/" element={<TweetList type={tweetlist.home} />} />
 						<Route path="/explore" element={<UserList type={userlist.home} />} />
