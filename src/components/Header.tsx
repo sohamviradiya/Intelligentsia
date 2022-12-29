@@ -39,7 +39,6 @@ function Header(props: any): JSX.Element {
                               {(isLogin) ? (
                                    <button className="h2 text-light bg-black pt-2" type="button" onClick={async (e) => { e.preventDefault(); await AuthModule.LOGOUT(); setIsLogin(false); }}> Logout </button>
                               ) : (
-
                                    <div className="dropdown">
                                         <button className="h2 text-light bg-black pt-2 px-4 dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false"> Login </button>
                                         <form className="dropdown-menu p-3 bg-dark text-bg-dark min-vw-25">

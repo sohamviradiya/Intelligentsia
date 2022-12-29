@@ -1,3 +1,4 @@
+import Profile from "../pages/Profile";
 import { baseurl } from "./config";
 
 export type AuthInterface = {
@@ -16,20 +17,15 @@ const AuthModule = (() => {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username, password }),
 		});
-		if(response.status === 401) alert("Invalid credentials");
+		if (response.status === 401) alert("Invalid credentials");
 		const data = await response.json();
 		if (!data.access_token) throw new Error("Unable to login");
 		localStorage.setItem("token", data.access_token);
-		return {
-			token: data.token,
-			username: username,
-			_id: null,
-		};
-	};
-
+		return PROFILE();
+	}
 	const PROFILE = async (): Promise<AuthInterface> => {
 		const token = localStorage.getItem("token");
-		if (!token) return { token: '', username: '', _id: '' };
+		if (!token) return { token: null, username: null, _id: null };
 		const response = await fetch(`${baseurl}/auth/`, {
 			method: "GET",
 			headers: {
