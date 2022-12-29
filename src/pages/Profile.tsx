@@ -22,7 +22,7 @@ function Profile(props: any): JSX.Element {
 		});
 	}, []);
 
-	const deleteUser = async () => {
+	const handleDelete = async () => {
 		const res = await fetch(`${baseurl}/users/`, {
 			method: "DELETE",
 			headers: {
@@ -34,9 +34,8 @@ function Profile(props: any): JSX.Element {
 		if (res.status === 200) {
 			localStorage.removeItem("token");
 			navigate("/");
-		} else {
+		} else
 			console.log(data);
-		}
 	};
 
 	return (
@@ -61,7 +60,7 @@ function Profile(props: any): JSX.Element {
 					<section className="d-flex flex-row p-3 gap-3">
 						<NavLink className="btn btn-primary" to="/user">Edit Profile</NavLink>
 						<NavLink className="btn btn-primary" to="/tweet">Post Tweet</NavLink>
-						<button className="btn btn-danger" onClick={deleteUser}>Delete Account</button>
+						<button className="btn btn-danger" onClick={handleDelete}>Delete Account</button>
 					</section>) : (<></>)
 				}
 				<section className="mt-5 min-vh-100">

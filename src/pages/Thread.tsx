@@ -1,4 +1,4 @@
-import { useParams, Link, NavLink } from "react-router-dom";
+import { useParams, Link, NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { TweetInterface } from "../modules/tweet";
 import { baseurl } from "../modules/config";
@@ -12,6 +12,7 @@ function Thread(props: any): JSX.Element {
 	const [comments, setComments] = useState<CommentInterface[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [self, setSelf] = useState(false);
+	const navigate = useNavigate();
 	useEffect(() => {
 		if (!id) throw new Error("No id provided");
 		fetch(`${baseurl}/tweets/${id}`)
@@ -23,7 +24,7 @@ function Thread(props: any): JSX.Element {
 			})
 			.then((tweet) => {
 				AuthModule.PROFILE().then((data) => {
-					if (data._id == tweet.user._id) setSelf(true);					
+					if (data._id == tweet.user._id) setSelf(true);
 				});
 			});
 
@@ -34,6 +35,22 @@ function Thread(props: any): JSX.Element {
 		});
 
 	}, [id]);
+
+	const handleDelete = async () => {
+		const res = await fetch(`${baseurl}/tweets/${id}`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${localStorage.getItem("token")}`
+			}
+		});
+		const data = await res.json();
+		if (res.status === 200) {
+			localStorage.removeItem("token");
+			navigate("/");
+		} else
+			console.log(data);
+	};
 
 	return (
 		(loading) ?
@@ -56,6 +73,7 @@ function Thread(props: any): JSX.Element {
 				{(self) ? (
 					<section className="d-flex flex-row p-3 gap-3">
 						<NavLink className="btn btn-primary" to="edit">Edit Tweet</NavLink>
+						<button className="btn btn-danger" onClick={handleDelete}>Delete Tweet</button>
 					</section>) : (<></>)
 				}
 				<section className="container container-fluid">
