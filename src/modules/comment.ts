@@ -1,5 +1,4 @@
 import { TweetInterface } from "./tweet";
-import { baseurl } from "./config";
 import { UserInterface } from "./user";
 
 export type CommentInterface = {
