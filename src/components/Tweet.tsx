@@ -11,7 +11,7 @@ function Tweet(tweet: TweetInterface): JSX.Element {
 				</div>
 				<div className="col-8">
 					<div className="card-header h2 d-flex flex-row justify-content-start">
-						<Link className="card-title display-6 text-decoration-none text-primary" to={`tweet/${tweet._id}`}> {tweet.title} </Link>
+						<Link className="card-title display-6 text-decoration-none text-primary" to={`/tweet/${tweet._id}`}> {tweet.title} </Link>
 					</div>
 					<div className="card-body text-primary">
 						<Link className="text-decoration-none h2" to={`/user/${tweet.user._id}`}>{tweet.user.username}</Link>

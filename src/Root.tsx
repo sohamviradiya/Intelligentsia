@@ -35,6 +35,7 @@ class Root extends Component {
 						</Route>
 						<Route path="/tweet" element={<TweetForm />} />
 						<Route path="/tweet/:id" element={<Thread />} />
+						<Route path="/tweet/:id/edit" element={<TweetForm />} />
 						<Route path="*" element={<Error />} />
 					</Routes>
 				</div>
