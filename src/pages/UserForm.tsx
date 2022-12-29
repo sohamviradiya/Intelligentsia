@@ -1,15 +1,39 @@
 import { UserInterface } from "../modules/user";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { baseurl } from "../modules/config";
 import { useNavigate } from "react-router";
+import AuthModule from "../modules/auth";
 function UserForm(props: any): JSX.Element {
 	const [user, setUser] = useState<UserInterface>({} as UserInterface);
 	const [password, setPassword] = useState<string>('');
 	const [confirmPassword, setConfirmPassword] = useState<string>('');
-	const [avatar, setAvatar] = useState<Blob|null>(null);
+	const [avatar, setAvatar] = useState<Blob | null>(null);
 	const [errors, setErrors] = useState<string[]>([]);
 	const navigate = useNavigate();
-	const submituser = async (user: UserInterface, password: string, confirmPassword: string, avatar: Blob|null) => {
+
+	useEffect(() => {
+		AuthModule.PROFILE().then((data) => {
+			if (data._id) {
+				fetch(`${baseurl}/users/${data._id}`, {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}).then((res) => res.json()).then((data) => {
+					setUser(data);
+					fetch(`${baseurl}/${data.avatar}`, {
+						headers: {
+							'Content-Type': 'application/json',
+						}
+					}).then((res) => res.blob()).then((data) => {
+						setAvatar(data);
+					});
+				});
+			}
+		});
+	}, [props]);
+
+
+	const submituser = async (user: UserInterface, password: string, confirmPassword: string, avatar: Blob | null) => {
 		if (password !== confirmPassword) {
 			setErrors(['Passwords do not match']);
 			return;
@@ -20,15 +44,17 @@ function UserForm(props: any): JSX.Element {
 		(user.firstName) && (formData.append('firstName', user.firstName));
 		(user.lastName) && (formData.append('lastName', user.lastName));
 		(user.country) && (formData.append('country', user.country));
-		(user.avatar) && (formData.append('avatar', user.avatar));
 		(user.bio) && (formData.append('bio', user.bio));
 		(password) && (formData.append('password', password));
-		(avatar) && (formData.append('avatar', avatar));
-
+		(avatar) && (formData.append('avatar', avatar, 'avatar.jpg'));
+		const token = localStorage.getItem('token');
 		const data = await fetch(`${baseurl}/users`, {
-			method: 'POST',
+			method: (token) ? ('PUT') : ('POST'),
+			headers: {
+				'Authorization': `Bearer ${token}`
+			},
 			body: formData
-			}).then((res) => res.json());
+		}).then((res) => res.json());
 		if (data.statusCode === 412) {
 			setErrors(data.message);
 			return;
@@ -37,7 +63,10 @@ function UserForm(props: any): JSX.Element {
 			return;
 		} else {
 			setErrors([]);
-			navigate(`/user/${data._id}`);
+			(user.username) &&
+				AuthModule.LOGIN(user.username, password).then((data) => {
+					navigate(`/user/${data._id}`);
+				});
 		}
 	}
 
@@ -69,7 +98,7 @@ function UserForm(props: any): JSX.Element {
 			</div>
 
 			<div className="form-floating mb-3">
-				<input type="file" className="form-control" onChange={(e) => { setAvatar((e.target.files) ? (e.target.files[0]) : null ) }} id="avatarinput" placeholder="New York" />
+				<input type="file" className="form-control" onChange={(e) => { setAvatar((e.target.files) ? (e.target.files[0]) : null) }} id="avatarinput" placeholder="New York" />
 				<label htmlFor="avatarinput">avatar</label>
 			</div>
 

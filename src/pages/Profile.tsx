@@ -3,16 +3,21 @@ import { useEffect, useState } from "react";
 import { UserInterface } from "../modules/user";
 import Loading from "../components/Loading";
 import { baseurl } from "../modules/config";
+import AuthModule from "../modules/auth";
 
 function Profile(props: any): JSX.Element {
 	const { id } = useParams();
 	const [user, setUser] = useState<UserInterface>({} as UserInterface);
 	const [loading, setLoading] = useState(true);
+	const [self, setSelf] = useState(false);
 	useEffect(() => {
 		if (!id) throw new Error("No id provided");
 		fetch(`${baseurl}/users/${id}`).then(res => res.json()).then(data => {
 			setUser(data);
 			setLoading(false);
+		});
+		AuthModule.PROFILE().then(data => {
+			if (data._id === id) setSelf(true);
 		});
 	}, []);
 
@@ -34,6 +39,12 @@ function Profile(props: any): JSX.Element {
 						</div>
 					</div>
 				</section>
+				{(self) ? (
+					<section className="d-flex flex-row p-3 gap-3">
+						<NavLink className="btn btn-primary" to="/user">Edit Profile</NavLink>
+						<NavLink className="btn btn-primary" to="/tweet">Post Tweet</NavLink>
+					</section>) : (<></>)
+				}
 				<section className="mt-5 min-vh-100">
 					<ul className="nav nav-tabs">
 						<li className="nav-item">
