@@ -12,7 +12,7 @@ function Thread(props: any): JSX.Element {
 	const [tweet, setTweet] = useState<TweetInterface>({} as TweetInterface);
 	const [comments, setComments] = useState<CommentInterface[]>([]);
 	const [loading, setLoading] = useState(true);
-	const [self, setSelf] = useState(false);
+	const [current, setCurrent] = useState<string>("");
 	const navigate = useNavigate();
 	useEffect(() => {
 		if (!id) throw new Error("No id provided");
@@ -25,7 +25,7 @@ function Thread(props: any): JSX.Element {
 			})
 			.then((tweet) => {
 				AuthModule.PROFILE().then((data) => {
-					if (data._id == tweet.user._id) setSelf(true);
+					setCurrent((data._id)?data._id:"");
 				});
 			});
 
@@ -71,19 +71,19 @@ function Thread(props: any): JSX.Element {
 						</div>
 					</div>
 				</section>
-				{(self) ? (
+				{(tweet.user._id == current) ? (
 					<section className="d-flex flex-row p-3 gap-3">
 						<NavLink className="btn btn-primary" to="edit">Edit Tweet</NavLink>
 						<button className="btn btn-danger" onClick={handleDelete}>Delete Tweet</button>
 					</section>) : (<section>
-						{(localStorage.getItem("token")) ? (<CommentForm _id={id} />) : (<></>)}
+						{(localStorage.getItem("token")) ? (<CommentForm _id={id} setComments={setComments} comments={comments} />) : (<></>)}
 					</section>)
 				}
 				<section className="container container-fluid">
 					<ul className="container w-75 p-5">
 						{comments.map((comment) => (
 							<li key={`${comment._id}`} className="mb-5">
-								{Comment(comment)}
+								{Comment(comment, current, setComments, comments )}
 							</li>
 						))}
 					</ul>
