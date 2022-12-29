@@ -4,6 +4,7 @@ import AuthModule from "../modules/auth";
 function Header(props: any): JSX.Element {
      const [user, setUser] = useState<{ username: string, _id: string, password: string }>({ username: '', _id: '', password: '' }
      );
+     
      const [isLogin, setIsLogin] = useState<boolean>(false);
      useEffect(() => {
           AuthModule.PROFILE()
@@ -17,6 +18,19 @@ function Header(props: any): JSX.Element {
                     alert(err);
                });
      }, []);
+
+     const handleLogin = async () => {
+          const { _id } = await AuthModule.LOGIN(user.username, user.password);
+          (_id) && setUser({ ...user, _id });
+          setIsLogin(true); 
+     }
+
+     const handleLogout = async () => {
+          await AuthModule.LOGOUT();
+          setUser({ username: '', _id: '', password: '' });
+          setIsLogin(false); 
+     }
+     
      return (
           <div className="bg-black text-light fixed-top p-2 mb-5">
                <nav className="d-flex flex-row  justify-content-between px-3">
@@ -37,7 +51,7 @@ function Header(props: any): JSX.Element {
                          </li>
                          <li className="nav-item">
                               {(isLogin) ? (
-                                   <button className="h2 text-light bg-black pt-2" type="button" onClick={async (e) => { e.preventDefault(); await AuthModule.LOGOUT(); setIsLogin(false); }}> Logout </button>
+                                   <button className="h2 text-light bg-black pt-2" type="button" onClick={handleLogout}> Logout </button>
                               ) : (
                                    <div className="dropdown">
                                         <button className="h2 text-light bg-black pt-2 px-4 dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false"> Login </button>
@@ -48,7 +62,7 @@ function Header(props: any): JSX.Element {
                                              <div className="mb-3 input-group">
                                                   <input type="password" className="form-control" name="password" onChange={(e) => { setUser({ ...user, password: e.target.value }) }} value={user.password} placeholder="password" />
                                              </div>
-                                             <button type="button" onClick={async (e) => { e.preventDefault(); await AuthModule.LOGIN(user.username, user.password); setIsLogin(true); }} className="btn btn-primary">Log in</button>
+                                                  <button type="button" onClick={handleLogin} className="btn btn-primary">Log in</button>
                                         </form>
                                    </div>
                               )}
