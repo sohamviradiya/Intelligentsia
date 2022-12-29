@@ -9,7 +9,7 @@ export type UserInterface = {
 	country: string | null;
 	following: UserInterface[];
 	bio: string | null;
-	avatar: File | null;
+	avatar: string | null;
 	joinedAt: Date;
 };
 
