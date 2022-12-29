@@ -6,6 +6,7 @@ import Comment from "../components/Comment";
 import { CommentInterface } from "../modules/comment";
 import Loading from "../components/Loading";
 import AuthModule from "../modules/auth";
+import CommentForm from "../components/CommentForm";
 function Thread(props: any): JSX.Element {
 	const { id } = useParams();
 	const [tweet, setTweet] = useState<TweetInterface>({} as TweetInterface);
@@ -74,7 +75,9 @@ function Thread(props: any): JSX.Element {
 					<section className="d-flex flex-row p-3 gap-3">
 						<NavLink className="btn btn-primary" to="edit">Edit Tweet</NavLink>
 						<button className="btn btn-danger" onClick={handleDelete}>Delete Tweet</button>
-					</section>) : (<></>)
+					</section>) : (<section>
+						{(localStorage.getItem("token")) ? (<CommentForm _id={id} />) : (<></>)}
+					</section>)
 				}
 				<section className="container container-fluid">
 					<ul className="container w-75 p-5">
