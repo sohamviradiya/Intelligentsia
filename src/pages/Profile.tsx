@@ -45,7 +45,7 @@ function Profile(props: any): JSX.Element {
 			}
 		});
 		const data = await res.json();
-		if (res.status === 200) {
+		if (res.status == 200) {
 			localStorage.removeItem("token");
 			navigate("/");
 		} else

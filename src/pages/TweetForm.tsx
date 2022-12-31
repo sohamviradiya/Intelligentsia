@@ -5,7 +5,7 @@ import { TweetInterface } from "../modules/tweet";
 
 function TweetForm(props: any): JSX.Element {
 	const { id } = useParams();
-	const [tweet, setTweet] = useState<TweetInterface>({title: '', content: ''} as TweetInterface);
+	const [tweet, setTweet] = useState<TweetInterface>({ title: '', content: '' } as TweetInterface);
 	const [errors, setErrors] = useState<string[]>([]);
 	const navigate = useNavigate();
 	useEffect(() => {
@@ -39,9 +39,9 @@ function TweetForm(props: any): JSX.Element {
 			body: JSON.stringify({ title: tweet.title, content: tweet.content }),
 		});
 		const data = await (await res).json();
-		if (data.statusCode === 400) {
+		if (data.statusCode == 400) {
 			setErrors([data.message]);
-		} else if (data.statusCode === 412) {
+		} else if (data.statusCode == 412) {
 			setErrors(data.message);
 		} else {
 			navigate(`/tweet/${data._id}`);

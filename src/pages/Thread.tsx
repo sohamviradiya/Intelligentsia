@@ -13,6 +13,7 @@ function Thread(props: any): JSX.Element {
 	const [comments, setComments] = useState<CommentInterface[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [current, setCurrent] = useState<string>("");
+	const [comment, setComment] = useState<CommentInterface>({} as CommentInterface);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -24,7 +25,7 @@ function Thread(props: any): JSX.Element {
 				setLoading(false);
 				return data;
 			});
-		
+
 		AuthModule.PROFILE().then((data) => {
 			setCurrent((data._id) ? data._id : "");
 		});
@@ -102,7 +103,7 @@ function Thread(props: any): JSX.Element {
 									? <button className="btn btn-primary" onClick={handleUnlike}>Unlike</button>
 									: <button className="btn btn-primary" onClick={handleLike}>Like</button>)
 								}
-								<CommentForm _id={id} setComments={setComments} comments={comments} />
+								<CommentForm _id={id} comment={comment} />
 							</>) : <></>}
 
 					</section>)
@@ -111,7 +112,7 @@ function Thread(props: any): JSX.Element {
 					<ul className="container w-75 p-5">
 						{comments.map((comment) => (
 							<li key={`${comment._id}`} className="mb-5">
-								{Comment(comment, current, setComments, comments)}
+								{Comment(comment, current, setComments, comments, setComment)}
 							</li>
 						))}
 					</ul>

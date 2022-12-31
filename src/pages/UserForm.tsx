@@ -55,10 +55,10 @@ function UserForm(props: any): JSX.Element {
 			},
 			body: formData
 		}).then((res) => res.json());
-		if (data.statusCode === 412) {
+		if (data.statusCode == 412) {
 			setErrors(data.message);
 			return;
-		} else if (data.statusCode === 400) {
+		} else if (data.statusCode == 400) {
 			setErrors([data.message]);
 			return;
 		} else {
