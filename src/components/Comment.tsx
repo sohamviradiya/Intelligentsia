@@ -4,7 +4,7 @@ import { baseurl } from "../modules/config";
 import { useEffect, useState } from "react";
 import { AuthInterface } from "../modules/auth";
 import AuthModule from "../modules/auth";
-function Comment(comment: CommentInterface, current: string, setComments: Function, comments: CommentInterface[]): JSX.Element {
+function Comment(comment: CommentInterface, current: string, setComments: Function, comments: CommentInterface[], setComment: Function): JSX.Element {
      const handleDelete = async () => {
           const res = await fetch(`${baseurl}/comments/${comment._id}`, {
                method: "DELETE",
@@ -14,7 +14,7 @@ function Comment(comment: CommentInterface, current: string, setComments: Functi
                },
           });
           const data = await res.json();
-          if (res.status === 200) {
+          if (res.status == 200) {
                setComments(comments.filter((c) => c._id !== comment._id));
           }
      }
@@ -28,7 +28,7 @@ function Comment(comment: CommentInterface, current: string, setComments: Functi
                }
           });
           const data = await res.json();
-          setComments(comments.map((c) => (c._id === comment._id) ? data : c));
+          setComments(comments.map((c) => (c._id == comment._id) ? data : c));
      };
 
      const handleUnlike = async () => {
@@ -40,10 +40,14 @@ function Comment(comment: CommentInterface, current: string, setComments: Functi
                }
           });
           const data = await res.json();
-          setComments(comments.map((c) => (c._id === comment._id) ? data : c));
+          setComments(comments.map((c) => (c._id == comment._id) ? data : c));
      };
 
-          
+     const handleEdit = () => {
+          setComment(comment);
+          setComments(comments.filter((c) => c._id !== comment._id));
+     }
+
      return (
           <div className="card card-lg bg-dark border-warning">
                <div className="card-header h3 d-flex flex-row justify-content-start">
@@ -52,13 +56,17 @@ function Comment(comment: CommentInterface, current: string, setComments: Functi
                <div className="card-body text-warning">
                     <h5 className="card-title"> {comment.content} </h5>
                     <p className="card-text">Likes: {comment.likes.length} </p>
-                    {(current === comment.user._id) && <button className="btn btn-danger" onClick={handleDelete}>Delete</button>}
-                    
-                    {(current.length) ?
-                         (comment.likes.some((user) => (String(user._id) == current))
-                              ? <button className="btn btn-warning" onClick={handleUnlike}>Unlike</button>
-                              : <button className="btn btn-warning" onClick={handleLike}>Like</button>)
-                         : (<></>)}
+                    {(current == comment.user._id) ? (<>
+                         <button className="btn btn-danger me-2" onClick={handleDelete}>Delete</button>
+                         <button className="btn btn-warning" onClick={handleEdit}> Edit </button>
+                    </>) :
+                         <>
+                              {(current.length) ?
+                                   (comment.likes.some((user) => (String(user._id) == current))
+                                        ? <button className="btn btn-warning" onClick={handleUnlike}>Unlike</button>
+                                        : <button className="btn btn-warning" onClick={handleLike}>Like</button>)
+                                   : (<></>)}
+                         </>}
                </div>
                <div className="card-footer text-warning">
                     {new Date(comment.postedAt).toLocaleString()}
