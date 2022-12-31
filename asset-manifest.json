@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/static/css/main.888b3132.css",
-    "main.js": "/static/js/main.ce0af446.js",
-    "static/js/787.af5f285f.chunk.js": "/static/js/787.af5f285f.chunk.js",
-    "index.html": "/index.html",
-    "main.888b3132.css.map": "/static/css/main.888b3132.css.map",
-    "main.ce0af446.js.map": "/static/js/main.ce0af446.js.map",
-    "787.af5f285f.chunk.js.map": "/static/js/787.af5f285f.chunk.js.map"
+    "main.css": "/Intelligentsia/static/css/main.888b3132.css",
+    "main.js": "/Intelligentsia/static/js/main.ce0af446.js",
+    "static/js/787.af5f285f.chunk.js": "/Intelligentsia/static/js/787.af5f285f.chunk.js",
+    "index.html": "/Intelligentsia/index.html",
+    "main.888b3132.css.map": "/Intelligentsia/static/css/main.888b3132.css.map",
+    "main.ce0af446.js.map": "/Intelligentsia/static/js/main.ce0af446.js.map",
+    "787.af5f285f.chunk.js.map": "/Intelligentsia/static/js/787.af5f285f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.888b3132.css",
