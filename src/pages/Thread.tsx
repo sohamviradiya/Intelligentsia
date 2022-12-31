@@ -14,6 +14,7 @@ function Thread(props: any): JSX.Element {
 	const [loading, setLoading] = useState(true);
 	const [current, setCurrent] = useState<string>("");
 	const navigate = useNavigate();
+
 	useEffect(() => {
 		if (!id) throw new Error("No id provided");
 		fetch(`${baseurl}/tweets/${id}`)
@@ -22,13 +23,11 @@ function Thread(props: any): JSX.Element {
 				setTweet(data);
 				setLoading(false);
 				return data;
-			})
-			.then((tweet) => {
-				AuthModule.PROFILE().then((data) => {
-					setCurrent((data._id)?data._id:"");
-				});
 			});
-
+		
+		AuthModule.PROFILE().then((data) => {
+			setCurrent((data._id) ? data._id : "");
+		});
 		fetch(`${baseurl}/tweets/${id}/comments`).then((res) => {
 			res.json().then((data: CommentInterface[]) => {
 				setComments(data);
@@ -46,12 +45,33 @@ function Thread(props: any): JSX.Element {
 			}
 		});
 		const data = await res.json();
-		if (res.status === 200) {
-			localStorage.removeItem("token");
-			navigate("/");
-		} else
-			console.log(data);
+		navigate("/");
 	};
+
+	const handleLike = async () => {
+		const res = await fetch(`${baseurl}/tweets/${id}/like`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${localStorage.getItem("token")}`
+			}
+		});
+		const data = await res.json();
+		setTweet(data);
+	};
+
+	const handleUnlike = async () => {
+		const res = await fetch(`${baseurl}/tweets/${id}/like`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${localStorage.getItem("token")}`
+			}
+		});
+		const data = await res.json();
+		setTweet(data);
+	};
+
 
 	return (
 		(loading) ?
@@ -75,15 +95,23 @@ function Thread(props: any): JSX.Element {
 					<section className="d-flex flex-row p-3 gap-3">
 						<NavLink className="btn btn-primary" to="edit">Edit Tweet</NavLink>
 						<button className="btn btn-danger" onClick={handleDelete}>Delete Tweet</button>
-					</section>) : (<section>
-						{(localStorage.getItem("token")) ? (<CommentForm _id={id} setComments={setComments} comments={comments} />) : (<></>)}
+					</section>) : (<section className="d-flex flex-column align-items-center p-3 gap-2">
+						{(current.length) ?
+							(<>
+								{(tweet.likes.some((user) => (user._id == current))
+									? <button className="btn btn-primary" onClick={handleUnlike}>Unlike</button>
+									: <button className="btn btn-primary" onClick={handleLike}>Like</button>)
+								}
+								<CommentForm _id={id} setComments={setComments} comments={comments} />
+							</>) : <></>}
+
 					</section>)
 				}
 				<section className="container container-fluid">
 					<ul className="container w-75 p-5">
 						{comments.map((comment) => (
 							<li key={`${comment._id}`} className="mb-5">
-								{Comment(comment, current, setComments, comments )}
+								{Comment(comment, current, setComments, comments)}
 							</li>
 						))}
 					</ul>

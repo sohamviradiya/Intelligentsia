@@ -5,7 +5,7 @@ import { TweetInterface } from "../modules/tweet";
 
 function TweetForm(props: any): JSX.Element {
 	const { id } = useParams();
-	const [tweet, setTweet] = useState<TweetInterface>({} as TweetInterface);
+	const [tweet, setTweet] = useState<TweetInterface>({title: '', content: ''} as TweetInterface);
 	const [errors, setErrors] = useState<string[]>([]);
 	const navigate = useNavigate();
 	useEffect(() => {
@@ -23,18 +23,18 @@ function TweetForm(props: any): JSX.Element {
 
 	const submittweet = async (tweet: TweetInterface) => {
 
-		const res = (tweet.user) ? fetch(`${baseurl}/tweets`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"Authorization": `Bearer ${localStorage.getItem("token")}`,
-			},
-			body: JSON.stringify({ title: tweet.title, content: tweet.content }),
-		}) : fetch(`${baseurl}/tweets/${tweet._id}`, {
+		const res = (tweet._id) ? fetch(`${baseurl}/tweets/${tweet._id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization": `Bearer ${localStorage.getItem("token")}`
+			},
+			body: JSON.stringify({ title: tweet.title, content: tweet.content }),
+		}) : fetch(`${baseurl}/tweets`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${localStorage.getItem("token")}`,
 			},
 			body: JSON.stringify({ title: tweet.title, content: tweet.content }),
 		});

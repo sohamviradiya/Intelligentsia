@@ -1,4 +1,4 @@
-export const baseurl = "https://intelligentsia.onrender.com";
+export const baseurl = "http://localhost:3000";
 
 export enum userlist{
 	following,

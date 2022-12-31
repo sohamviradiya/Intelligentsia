@@ -24,6 +24,7 @@ const AuthModule = (() => {
 		return PROFILE();
 	}
 	const PROFILE = async (): Promise<AuthInterface> => {
+		
 		const token = localStorage.getItem("token");
 		if (!token) return { token: null, username: null, _id: null };
 		const response = await fetch(`${baseurl}/auth/`, {

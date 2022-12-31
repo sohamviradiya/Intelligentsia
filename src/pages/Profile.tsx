@@ -9,7 +9,8 @@ function Profile(props: any): JSX.Element {
 	const { id } = useParams();
 	const [user, setUser] = useState<UserInterface>({} as UserInterface);
 	const [loading, setLoading] = useState(true);
-	const [self, setSelf] = useState(false);
+	const [current, setCurrent] = useState<string>("");
+	const [isFollowing, setIsFollowing] = useState<boolean>(false);
 	const navigate = useNavigate();
 	useEffect(() => {
 		if (!id) throw new Error("No id provided");
@@ -17,10 +18,23 @@ function Profile(props: any): JSX.Element {
 			setUser(data);
 			setLoading(false);
 		});
-		AuthModule.PROFILE().then(data => {
-			if (data._id === id) setSelf(true);
+		AuthModule.PROFILE().then((data) => {
+			setCurrent((data._id) ? data._id : "");
 		});
 	}, []);
+
+	useEffect(() => {
+		fetch(`${baseurl}/users/${id}/followers`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			}
+		}).then(res => res.json()).then((data: UserInterface[]) => {
+			console.log(current);
+			console.log(data.find((user) => (String(user._id) == current)));
+			setIsFollowing(data.some((user) => (user._id == current)));
+		});
+	}, [current]);
 
 	const handleDelete = async () => {
 		const res = await fetch(`${baseurl}/users/`, {
@@ -36,6 +50,30 @@ function Profile(props: any): JSX.Element {
 			navigate("/");
 		} else
 			console.log(data);
+	};
+
+	const handleFollow = async () => {
+		const res = await fetch(`${baseurl}/users/${id}/follow`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${localStorage.getItem("token")}`
+			}
+		});
+		const data = await res.json();
+		setIsFollowing(true);
+	};
+
+	const handleUnfollow = async () => {
+		const res = await fetch(`${baseurl}/users/${id}/follow`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${localStorage.getItem("token")}`
+			}
+		});
+		const data = await res.json();
+		setIsFollowing(false);
 	};
 
 	return (
@@ -56,12 +94,20 @@ function Profile(props: any): JSX.Element {
 						</div>
 					</div>
 				</section>
-				{(self) ? (
+				{(current == user._id) ? (
 					<section className="d-flex flex-row p-3 gap-3">
 						<NavLink className="btn btn-primary" to="/user">Edit Profile</NavLink>
 						<NavLink className="btn btn-primary" to="/tweet">Post Tweet</NavLink>
 						<button className="btn btn-danger" onClick={handleDelete}>Delete Account</button>
-					</section>) : (<></>)
+					</section>) : (
+					<section className="d-flex flex-row p-3 gap-3">
+						{isFollowing ? (
+							<button className="btn btn-danger" onClick={handleUnfollow}>Unfollow</button>
+						) : (
+							<button className="btn btn-primary" onClick={handleFollow}>Follow</button>
+						)}
+					</section>
+				)
 				}
 				<section className="mt-5 min-vh-100">
 					<ul className="nav nav-tabs">

@@ -6,6 +6,7 @@ function Header(props: any): JSX.Element {
      );
      
      const [isLogin, setIsLogin] = useState<boolean>(false);
+
      useEffect(() => {
           AuthModule.PROFILE()
                .then((res) => {
@@ -15,7 +16,7 @@ function Header(props: any): JSX.Element {
                     setUser({ ...user, username: res.username, _id: res._id });
                })
                .catch((err) => {
-                    alert(err);
+                    console.log(err);
                });
      }, []);
 

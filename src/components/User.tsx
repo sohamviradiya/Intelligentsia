@@ -11,7 +11,7 @@ function User(user: UserInterface): JSX.Element {
 				</div>
 				<div className="col-8">
 					<div className="card-header display-6 d-flex flex-row justify-content-center">
-						<Link className="text-decoration-none text-success" to={`/user/${user._id}`}> {user.username} </Link>
+						<Link className="text-decoration-none text-success" to={`/user/${user._id}/`}> {user.username} </Link>
 					</div>
 					<div className="card-body text-success">
 						<h3 className="card-title"> {user.firstName} {user.lastName} </h3>
